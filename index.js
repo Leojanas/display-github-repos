@@ -1,11 +1,5 @@
 
 const baseURL= `https://api.github.com`;
-const list = ``;
-
-
-
-
-
 
 //function to generate the HTML for the new results
 function generateResults(response){
@@ -16,7 +10,7 @@ function generateResults(response){
         console.log('Loop started');
     $('#js-results-list').append(`<li><h3><a href="${response[i].html_url}" target="_blank">${response[i].name}</a></h3></li>`)
     }
-    //$('#js-results').removeClass('hidden');
+    $('#js-results').removeClass('hidden');
 }
 
 //function to get the repos for the submitted handle
@@ -27,7 +21,9 @@ function getRepos(handle){
     fetch(URL)
     .then(response => response.json())
     .then(responseJson => generateResults(responseJson))
-
+    .catch(err => {
+        $('#js-results-list').text('Something went wrong. Please try again later.')}
+    );
 }
 
 //watchForm function to watch the submit button
@@ -35,7 +31,7 @@ function watchForm(){
     $('#js-form').submit(event =>{
         event.preventDefault();
         const handle = $('#js-handle').val();
-        this.value='';
+        $('#js-handle').val('');
         getRepos(handle);
     })
 }
